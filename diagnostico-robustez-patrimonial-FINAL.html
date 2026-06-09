@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico VIDA de Robustez Patrimonial™ · Ivan Vianna CFP®</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --verde:    #1A3C2E;
+  --verde-m:  #2E5C46;
+  --verde-c:  #243d30;
+  --ouro:     #f8e38c;
+  --ouro-m:   #d7ae4d;
+  --ouro-e:   #b8922a;
+  --branco:   #FFFFFF;
+  --texto:    #FFFFFF;
+  --cinza:    #e8e0d0;
+  --cinza-e:  #d0c8b8;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:16px;scroll-behavior:smooth;}
+body{
+  background:var(--verde);color:var(--branco);
+  font-family:'Montserrat',sans-serif;
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;padding:0 1rem 6rem;
+  position:relative;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;top:-20%;right:-10%;
+  width:55vw;height:55vw;border-radius:50%;
+  background:radial-gradient(circle,rgba(248,227,140,0.04) 0%,transparent 70%);
+  pointer-events:none;z-index:0;
+}
+.wrap{width:100%;max-width:760px;position:relative;z-index:1;}
+
+/* HEADER */
+.header{
+  text-align:center;padding:3rem 0 2.5rem;
+  border-bottom:1px solid rgba(248,227,140,0.12);
+  margin-bottom:2.5rem;
+}
+.header-badge{
+  display:inline-block;
+  font-size:0.82rem;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--ouro-m);
+  border:1px solid rgba(248,227,140,0.28);
+  padding:0.3rem 0.9rem;border-radius:2px;
+  margin-bottom:1.4rem;
+}
+.header h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.7rem,4.5vw,2.6rem);
+  font-weight:300;color:var(--branco);
+  line-height:1.2;margin-bottom:0.4rem;
+}
+.header h1 em{font-style:italic;color:var(--ouro);}
+.header-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.15rem;font-style:italic;font-weight:300;
+  color:var(--cinza);line-height:1.6;margin-top:1rem;
+  max-width:520px;margin-left:auto;margin-right:auto;
+}
+
+/* TELAS */
+.tela{display:none;animation:fadeUp 0.4s ease;}
+.tela.ativa{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+/* PROGRESSO GLOBAL */
+.prog-global{
+  display:flex;gap:0;margin-bottom:2.5rem;
+  border-radius:3px;overflow:hidden;
+}
+.prog-bloco{
+  flex:1;height:4px;background:rgba(255,255,255,0.08);
+  transition:background 0.4s;position:relative;
+}
+.prog-bloco::after{
+  content:'';position:absolute;top:0;left:0;
+  height:100%;width:0;
+  background:linear-gradient(90deg,var(--ouro-e),var(--ouro));
+  transition:width 0.5s ease;
+}
+.prog-bloco.ativo::after{width:50%;}
+.prog-bloco.feito::after{width:100%;}
+.prog-bloco+.prog-bloco{border-left:1px solid rgba(255,255,255,0.05);}
+
+/* BLOCO HEADER */
+.bloco-header{margin-bottom:2rem;}
+.bloco-num{
+  font-size:0.82rem;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--ouro-m);margin-bottom:0.4rem;
+}
+.bloco-titulo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.4rem,3.5vw,1.9rem);
+  font-weight:400;color:var(--branco);
+  line-height:1.3;margin-bottom:0.4rem;
+}
+.bloco-desc{
+  font-size:1rem;color:var(--cinza);line-height:1.65;
+}
+
+/* CAMPOS */
+.campo{margin-bottom:1.4rem;}
+.campo-label{
+  display:block;font-size:0.88rem;font-weight:700;
+  letter-spacing:0.05em;text-transform:uppercase;
+  color:var(--texto);margin-bottom:0.5rem;
+}
+.campo-label span{
+  font-weight:400;text-transform:none;letter-spacing:0;
+  font-size:0.85rem;color:var(--cinza);
+}
+.input-field,.select-field{
+  width:100%;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(248,227,140,0.2);
+  border-radius:4px;padding:0.85rem 1rem;
+  font-family:'Montserrat',sans-serif;
+  font-size:1rem;color:var(--branco);
+  outline:none;transition:border-color 0.3s;
+  appearance:none;-webkit-appearance:none;
+}
+.input-field::placeholder,.select-field option[value=""]{color:rgba(255,255,255,0.90);}
+.input-field:focus,.select-field:focus{border-color:var(--ouro-m);}
+.select-field{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23d7ae4d' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 1rem center;
+  padding-right:2.5rem;cursor:pointer;
+}
+.select-field option{background:#1A3C2E;color:var(--branco);}
+
+/* OPCOES ESCALA */
+.escala-wrap{display:flex;flex-direction:column;gap:0.55rem;}
+.escala-opcao{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(248,227,140,0.12);
+  border-radius:4px;padding:0.85rem 1.1rem;
+  cursor:pointer;transition:all 0.22s;
+  display:flex;align-items:flex-start;gap:0.8rem;
+}
+.escala-opcao:hover{background:rgba(248,227,140,0.06);border-color:var(--ouro-m);transform:translateX(2px);}
+.escala-opcao.sel{background:rgba(248,227,140,0.1);border-color:var(--ouro-m);}
+.op-dot{
+  flex-shrink:0;width:1.4rem;height:1.4rem;
+  border-radius:50%;border:1.5px solid rgba(248,227,140,0.3);
+  display:flex;align-items:center;justify-content:center;
+  margin-top:0.1rem;transition:all 0.2s;
+}
+.escala-opcao.sel .op-dot{
+  background:var(--ouro-m);border-color:var(--ouro-m);
+}
+.op-dot-inner{width:6px;height:6px;border-radius:50%;background:var(--verde);opacity:0;transition:opacity 0.2s;}
+.escala-opcao.sel .op-dot-inner{opacity:1;}
+.op-txt-wrap{}
+.op-pts-label{
+  font-size:0.85rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;
+  color:var(--ouro-m);margin-bottom:0.2rem;
+}
+.escala-opcao.sel .op-pts-label{color:var(--ouro);}
+.op-txt{font-size:0.85rem;color:var(--texto);line-height:1.5;}
+.escala-opcao.sel .op-txt{color:var(--branco);font-weight:600;}
+
+/* TEXTAREA */
+.textarea-field{
+  width:100%;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(248,227,140,0.2);
+  border-radius:4px;padding:0.85rem 1rem;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem;color:var(--branco);
+  outline:none;transition:border-color 0.3s;
+  resize:vertical;min-height:80px;
+  line-height:1.6;
+}
+.textarea-field::placeholder{color:rgba(255,255,255,0.90);}
+.textarea-field:focus{border-color:var(--ouro-m);}
+
+/* GRID 2 COLUNAS */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:520px){.grid-2{grid-template-columns:1fr;}}
+
+/* BOTÕES */
+.btn-wrap{display:flex;gap:0.75rem;margin-top:2rem;flex-wrap:wrap;}
+.btn{
+  flex:1;min-width:140px;
+  display:flex;align-items:center;justify-content:center;gap:0.5rem;
+  padding:0.9rem 1.5rem;border-radius:3px;
+  font-family:'Montserrat',sans-serif;font-size:0.85rem;font-weight:700;
+  letter-spacing:0.08em;text-transform:uppercase;
+  cursor:pointer;border:none;transition:all 0.25s;
+}
+.btn-ouro{background:linear-gradient(135deg,#f8e38c 0%,#d7ae4d 50%,#f8e38c 100%);color:var(--verde);}
+.btn-ouro:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(215,174,77,0.28);}
+.btn-ghost{background:transparent;border:1px solid rgba(248,227,140,0.28);color:var(--ouro);}
+.btn-ghost:hover{background:rgba(248,227,140,0.06);}
+
+/* DIVISOR */
+.divisor{height:1px;background:rgba(248,227,140,0.1);margin:2rem 0;}
+
+/* ══════════════════════════════════════
+   RELATÓRIO
+══════════════════════════════════════ */
+#tela-relatorio{display:none;}
+#tela-relatorio.ativa{display:block;}
+
+.rel-capa{
+  text-align:center;
+  padding:3rem 0 2rem;
+  border-bottom:1px solid rgba(248,227,140,0.15);
+  margin-bottom:3rem;
+}
+.rel-capa-badge{
+  font-size:0.82rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  color:rgba(248,227,140,0.8);margin-bottom:1.2rem;
+}
+.rel-capa h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.6rem,4vw,2.4rem);
+  font-weight:300;color:var(--branco);
+  line-height:1.2;margin-bottom:0.4rem;
+}
+.rel-capa h2 em{font-style:italic;color:var(--ouro);}
+.rel-capa-nome{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem;font-style:italic;color:var(--cinza);
+  margin-top:0.8rem;
+}
+.rel-data{font-size:0.82rem;color:rgba(255,255,255,0.55);letter-spacing:0.06em;margin-top:0.4rem;}
+
+/* SEÇÃO DO RELATÓRIO */
+.rel-secao{margin-bottom:3rem;}
+.rel-secao-header{
+  display:flex;align-items:center;gap:1rem;
+  padding-bottom:1rem;
+  border-bottom:1px solid rgba(248,227,140,0.12);
+  margin-bottom:1.5rem;
+}
+.rel-secao-num{
+  width:2.2rem;height:2.2rem;flex-shrink:0;
+  border:1px solid rgba(248,227,140,0.35);border-radius:2px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem;font-weight:600;color:var(--ouro);
+}
+.rel-secao-titulo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.35rem;font-weight:400;color:var(--branco);
+  line-height:1.3;
+}
+.rel-secao-subtitulo{font-size:0.85rem;color:var(--cinza);letter-spacing:0.04em;text-transform:uppercase;}
+
+/* ÍNDICE IVRP */
+.ivcp-hero{
+  display:flex;flex-direction:column;align-items:center;
+  gap:1rem;margin-bottom:2rem;
+}
+.ivcp-anel{position:relative;width:160px;height:160px;}
+.ivcp-anel svg{transform:rotate(-90deg);width:160px;height:160px;}
+.ivcp-track{fill:none;stroke:rgba(255,255,255,0.08);stroke-width:10;}
+.ivcp-fill{
+  fill:none;stroke:url(#gIVRP);stroke-width:10;
+  stroke-linecap:round;stroke-dasharray:440;stroke-dashoffset:440;
+  transition:stroke-dashoffset 1.8s cubic-bezier(0.4,0,0.2,1);
+}
+.ivcp-centro{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);text-align:center;
+}
+.ivcp-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.8rem;font-weight:300;color:var(--ouro);line-height:1;
+}
+.ivcp-label{font-size:0.82rem;font-weight:700;letter-spacing:0.08em;color:rgba(248,227,140,0.75);text-transform:uppercase;}
+.ivcp-classificacao{text-align:center;}
+.ivcp-badge{
+  display:inline-block;padding:0.4rem 1.4rem;border-radius:2px;
+  font-size:0.82rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  margin-bottom:0.7rem;
+}
+.ivcp-resposta{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.2rem,3.5vw,1.7rem);font-weight:400;
+  color:var(--branco);line-height:1.3;margin-bottom:0.5rem;
+}
+.ivcp-frase{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.05rem;font-style:italic;color:var(--cinza);line-height:1.6;
+  max-width:440px;
+}
+
+/* MAPA RADAR */
+.mapa-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem;}
+@media(max-width:560px){.mapa-grid{grid-template-columns:1fr;}}
+.dim-card{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(248,227,140,0.1);
+  border-radius:4px;padding:1rem 1.1rem;
+}
+.dim-card-topo{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;}
+.dim-card-nome{font-size:0.85rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--branco);}
+.dim-card-pts{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--ouro);}
+.dim-bar{height:4px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden;margin-bottom:0.6rem;}
+.dim-bar-fill{height:100%;border-radius:2px;transition:width 1.2s ease;}
+.dim-interp{font-size:0.92rem;color:var(--cinza);line-height:1.6;}
+
+/* VULNERABILIDADES */
+.vuln-lista{display:flex;flex-direction:column;gap:1rem;}
+.vuln-item{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(248,227,140,0.1);
+  border-radius:4px;padding:1.2rem 1.3rem;
+  border-left:3px solid transparent;
+}
+.vuln-item.alta  {border-left-color:#ff6666;}
+.vuln-item.media {border-left-color:#ffcc66;}
+.vuln-item.baixa {border-left-color:#88ddaa;}
+.vuln-topo{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:0.6rem;flex-wrap:wrap;}
+.vuln-titulo{font-size:1rem;font-weight:700;color:var(--branco);line-height:1.4;}
+.vuln-badges{display:flex;gap:0.4rem;flex-wrap:wrap;flex-shrink:0;}
+.v-badge{
+  font-size:0.82rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;
+  padding:0.3rem 0.75rem;border-radius:2px;
+}
+.vb-imp-alto{background:rgba(200,60,60,0.2);border:1px solid rgba(200,60,60,0.4);color:#ff9090;}
+.vb-imp-med{background:rgba(210,140,40,0.2);border:1px solid rgba(210,140,40,0.4);color:#ffcc66;}
+.vb-imp-baixo{background:rgba(70,130,90,0.2);border:1px solid rgba(70,130,90,0.4);color:#88ddaa;}
+.vb-prior-imed{background:rgba(200,60,60,0.15);border:1px solid rgba(200,60,60,0.3);color:#ff9090;}
+.vb-prior-90{background:rgba(210,140,40,0.15);border:1px solid rgba(210,140,40,0.3);color:#ffcc66;}
+.vb-prior-180{background:rgba(70,130,90,0.15);border:1px solid rgba(70,130,90,0.3);color:#88ddaa;}
+.vb-prior-360{background:rgba(100,100,180,0.15);border:1px solid rgba(100,100,180,0.3);color:#aaaaee;}
+.vuln-desc{font-size:0.95rem;color:var(--cinza);line-height:1.65;}
+
+/* ARQUITETURA */
+.arq-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:0.5rem;}
+@media(max-width:520px){.arq-grid{grid-template-columns:1fr;}}
+.arq-col{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(248,227,140,0.1);
+  border-radius:4px;padding:1.2rem;
+}
+.arq-col-titulo{
+  font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+  margin-bottom:1rem;padding-bottom:0.6rem;
+  border-bottom:1px solid rgba(248,227,140,0.12);
+}
+.arq-col.atual .arq-col-titulo{color:#ff9090;}
+.arq-col.rec .arq-col-titulo{color:#88ddaa;}
+.arq-nodes{display:flex;flex-direction:column;align-items:center;gap:0;}
+.arq-node{
+  width:100%;text-align:center;padding:0.6rem 0.8rem;
+  border-radius:3px;font-size:0.92rem;font-weight:600;
+  letter-spacing:0.04em;
+}
+.arq-col.atual .arq-node{
+  background:rgba(200,60,60,0.1);border:1px solid rgba(200,60,60,0.25);color:#ffaaaa;
+}
+.arq-col.rec .arq-node{
+  background:rgba(70,130,90,0.1);border:1px solid rgba(70,130,90,0.25);color:#aaddbb;
+}
+.arq-arrow{
+  font-size:1rem;color:rgba(255,255,255,0.85);
+  padding:0.15rem 0;line-height:1;
+}
+.arq-obs{
+  font-size:0.9rem;color:var(--cinza);
+  line-height:1.6;margin-top:1rem;font-style:italic;
+}
+
+/* PLANO */
+.fases{display:flex;flex-direction:column;gap:1.2rem;}
+.fase{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(248,227,140,0.1);
+  border-radius:4px;overflow:hidden;
+}
+.fase-header{
+  padding:0.9rem 1.2rem;
+  background:rgba(248,227,140,0.04);
+  border-bottom:1px solid rgba(248,227,140,0.1);
+  display:flex;align-items:center;gap:0.8rem;
+}
+.fase-num{
+  width:1.8rem;height:1.8rem;flex-shrink:0;
+  border:1px solid rgba(248,227,140,0.3);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.82rem;font-weight:700;color:var(--ouro-m);
+}
+.fase-titulo{font-size:0.95rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--branco);}
+.fase-prazo{font-size:0.85rem;color:var(--cinza);letter-spacing:0.04em;text-transform:uppercase;margin-left:auto;}
+.fase-acoes{padding:1rem 1.2rem;display:flex;flex-direction:column;gap:0.5rem;}
+.fase-acao{
+  display:flex;align-items:flex-start;gap:0.7rem;
+  font-size:0.95rem;color:var(--branco);line-height:1.55;
+}
+.acao-check{
+  flex-shrink:0;width:1.1rem;height:1.1rem;
+  border:1.5px solid rgba(248,227,140,0.25);border-radius:2px;
+  margin-top:0.15rem;
+}
+
+/* SESSÃO AGENDAMENTO */
+.sessao-card{
+  background:linear-gradient(135deg,rgba(46,92,70,0.5) 0%,rgba(26,60,46,0.7) 100%);
+  border:1px solid rgba(248,227,140,0.22);
+  border-radius:6px;padding:2rem 1.8rem;
+  text-align:center;margin-top:2rem;
+}
+.sessao-titulo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.5rem;font-weight:400;color:var(--branco);
+  margin-bottom:0.6rem;line-height:1.35;
+}
+.sessao-sub{font-size:1rem;color:var(--branco);line-height:1.65;margin-bottom:1.5rem;max-width:400px;margin-left:auto;margin-right:auto;}
+.btn-sessao{
+  display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;
+  padding:0.95rem 2rem;border-radius:3px;
+  font-family:'Montserrat',sans-serif;font-size:0.88rem;font-weight:700;
+  letter-spacing:0.08em;text-transform:uppercase;
+  background:linear-gradient(135deg,#f8e38c 0%,#d7ae4d 50%,#f8e38c 100%);
+  color:var(--verde);text-decoration:none;border:none;cursor:pointer;
+  transition:all 0.25s;margin-bottom:0.7rem;width:100%;
+}
+.btn-sessao:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(215,174,77,0.28);}
+.btn-wpp{
+  display:flex;align-items:center;justify-content:center;gap:0.5rem;
+  padding:0.9rem 1.5rem;border-radius:3px;width:100%;
+  font-family:'Montserrat',sans-serif;font-size:0.85rem;font-weight:700;
+  letter-spacing:0.08em;text-transform:uppercase;
+  background:transparent;border:1px solid rgba(248,227,140,0.3);
+  color:var(--ouro);cursor:pointer;transition:all 0.25s;
+}
+.btn-wpp:hover{background:rgba(248,227,140,0.07);}
+
+/* RODAPÉ */
+.rodape{
+  text-align:center;margin-top:3rem;
+  padding-top:1.5rem;border-top:1px solid rgba(248,227,140,0.09);
+}
+.rodape p{font-size:0.8rem;color:rgba(255,255,255,0.55);line-height:1.8;}
+.rodape strong{color:rgba(248,227,140,0.75);font-weight:600;}
+
+/* CORES NÍVEL */
+.nc{background:rgba(200,60,60,0.18);border:1px solid rgba(200,60,60,0.38);color:#ff9090;}
+.nf{background:rgba(210,140,40,0.18);border:1px solid rgba(210,140,40,0.38);color:#ffcc66;}
+.np{background:rgba(70,130,90,0.18);border:1px solid rgba(70,130,90,0.38);color:#88ddaa;}
+.nr{background:rgba(248,227,140,0.12);border:1px solid rgba(248,227,140,0.32);color:var(--ouro);}
+.resp-nc{color:#ff9090;} .resp-nf{color:#ffcc66;} .resp-np{color:#88ddaa;} .resp-nr{color:var(--ouro);}
+.fc{background:linear-gradient(90deg,#c83c3c,#ff6666);}
+.ff{background:linear-gradient(90deg,#c8820a,#ffaa33);}
+.fp{background:linear-gradient(90deg,#2d7a50,#55cc88);}
+.fr{background:linear-gradient(90deg,var(--ouro-e),var(--ouro));}
+
+@media(max-width:480px){
+  .btn-wrap{flex-direction:column;}
+  .vuln-topo{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-badge">Ivan Vianna · CFP® · Método VIDA</div>
+  <h1>Diagnóstico VIDA de<br><em>Robustez Patrimonial</em>™</h1>
+  <p class="header-sub">Responda com honestidade. Cada pergunta revela uma dimensão do sistema que sustenta — ou fragiliza — tudo que você construiu.</p>
+</header>
+
+<!-- PROGRESSO GLOBAL -->
+<div class="prog-global" id="progGlobal">
+  <div class="prog-bloco" id="pb0"></div>
+  <div class="prog-bloco" id="pb1"></div>
+  <div class="prog-bloco" id="pb2"></div>
+  <div class="prog-bloco" id="pb3"></div>
+  <div class="prog-bloco" id="pb4"></div>
+  <div class="prog-bloco" id="pb5"></div>
+</div>
+
+<!-- ════════════════════════════════
+     BLOCO 0 — CONTEXTO
+════════════════════════════════ -->
+<div class="tela ativa" id="tela-b0">
+  <div class="bloco-header">
+    <div class="bloco-num">Bloco 0 · Contexto patrimonial</div>
+    <div class="bloco-titulo">Primeiro, vamos entender seu contexto</div>
+    <div class="bloco-desc">Estas informações personalizam sua análise. Não há resposta certa ou errada.</div>
+  </div>
+
+  <div class="campo">
+    <label class="campo-label">Seu nome completo</label>
+    <input class="input-field" type="text" id="c0_nome" placeholder="Nome completo" autocomplete="name"/>
+  </div>
+
+  <div class="grid-2">
+    <div class="campo">
+      <label class="campo-label">Seu melhor e-mail</label>
+      <input class="input-field" type="email" id="c0_email" placeholder="seu@email.com" autocomplete="email"/>
+    </div>
+    <div class="campo">
+      <label class="campo-label">WhatsApp com DDD</label>
+      <input class="input-field" type="tel" id="c0_wpp" placeholder="11999999999" autocomplete="tel"/>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="campo">
+      <label class="campo-label">Faixa patrimonial aproximada <span>(patrimônio líquido total)</span></label>
+      <select class="select-field" id="c0_faixa">
+        <option value="">Selecione</option>
+        <option value="1">R$ 500 mil a R$ 1 milhão</option>
+        <option value="2">R$ 1 milhão a R$ 3 milhões</option>
+        <option value="3">R$ 3 milhões a R$ 10 milhões</option>
+        <option value="4">R$ 10 milhões a R$ 30 milhões</option>
+        <option value="5">Acima de R$ 30 milhões</option>
+      </select>
+    </div>
+    <div class="campo">
+      <label class="campo-label">Idade</label>
+      <select class="select-field" id="c0_idade">
+        <option value="">Selecione</option>
+        <option value="1">Até 35 anos</option>
+        <option value="2">36 a 45 anos</option>
+        <option value="3">46 a 55 anos</option>
+        <option value="4">56 a 65 anos</option>
+        <option value="5">Acima de 65 anos</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="campo">
+    <label class="campo-label">Composição principal do patrimônio <span>(pode escolher mais de um)</span></label>
+    <div class="escala-wrap" id="c0_comp">
+      <div class="escala-opcao" onclick="toggleMulti(this,'c0_comp')"><div class="op-dot"><div class="op-dot-inner"></div></div><div class="op-txt-wrap"><div class="op-txt">Empresa própria ou participação societária</div></div></div>
+      <div class="escala-opcao" onclick="toggleMulti(this,'c0_comp')"><div class="op-dot"><div class="op-dot-inner"></div></div><div class="op-txt-wrap"><div class="op-txt">Imóveis residenciais ou comerciais</div></div></div>
+      <div class="escala-opcao" onclick="toggleMulti(this,'c0_comp')"><div class="op-dot"><div class="op-dot-inner"></div></div><div class="op-txt-wrap"><div class="op-txt">Carteira de investimentos financeiros</div></div></div>
+      <div class="escala-opcao" onclick="toggleMulti(this,'c0_comp')"><div class="op-dot"><div class="op-dot-inner"></div></div><div class="op-txt-wrap"><div class="op-txt">Previdência privada ou planos de benefícios</div></div></div>
+      <div class="escala-opcao" onclick="toggleMulti(this,'c0_comp')"><div class="op-dot"><div class="op-dot-inner"></div></div><div class="op-txt-wrap"><div class="op-txt">Ativos no exterior</div></div></div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="campo">
+      <label class="campo-label">Estrutura familiar</label>
+      <select class="select-field" id="c0_familia">
+        <option value="">Selecione</option>
+        <option value="1">Solteiro, sem filhos</option>
+        <option value="2">Casado ou união estável, sem filhos</option>
+        <option value="3">Casado ou união estável, com filhos menores</option>
+        <option value="4">Casado ou união estável, com filhos adultos</option>
+        <option value="5">Família empresária — múltiplos membros envolvidos no negócio</option>
+      </select>
+    </div>
+    <div class="campo">
+      <label class="campo-label">Principal fonte de renda atual</label>
+      <select class="select-field" id="c0_renda">
+        <option value="">Selecione</option>
+        <option value="1">Salário ou pró-labore como executivo</option>
+        <option value="2">Resultado da minha empresa</option>
+        <option value="3">Honorários profissionais (médico, advogado etc.)</option>
+        <option value="4">Renda passiva de investimentos e imóveis</option>
+        <option value="5">Combinação de múltiplas fontes</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="divisor"></div>
+  <div class="bloco-header" style="margin-bottom:1.2rem;">
+    <div class="bloco-num">Dados estruturais</div>
+    <div class="bloco-titulo" style="font-size:1.3rem;">Cinco perguntas factuais</div>
+    <div class="bloco-desc">Respostas objetivas que aumentam a precisão do diagnóstico.</div>
+  </div>
+
+  <div class="grid-2">
+    <div class="campo">
+      <label class="campo-label">Possui empresa própria ou participação societária?</label>
+      <select class="select-field" id="c0_empresa">
+        <option value="">Selecione</option>
+        <option value="sim">Sim</option>
+        <option value="nao">Não</option>
+      </select>
+    </div>
+    <div class="campo">
+      <label class="campo-label">Quantos dependentes financeiros?</label>
+      <select class="select-field" id="c0_dependentes">
+        <option value="">Selecione</option>
+        <option value="0">Nenhum</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3 ou 4</option>
+        <option value="5">5 ou mais</option>
+      </select>
+    </div>
+    <div class="campo">
+      <label class="campo-label">Possui ativos no exterior?</label>
+      <select class="select-field" id="c0_exterior">
+        <option value="">Selecione</option>
+        <option value="sim">Sim</option>
+        <option value="nao">Não</option>
+      </select>
+    </div>
+    <div class="campo">
+      <label class="campo-label">Existe holding patrimonial ativa hoje?</label>
+      <select class="select-field" id="c0_holding">
+        <option value="">Selecione</option>
+        <option value="sim">Sim, ativa e estruturada</option>
+        <option value="parcial">Em implantação</option>
+        <option value="nao">Não existe</option>
+      </select>
+    </div>
+    <div class="campo">
+      <label class="campo-label">Existe testamento registrado em cartório?</label>
+      <select class="select-field" id="c0_testamento">
+        <option value="">Selecione</option>
+        <option value="sim">Sim, atualizado</option>
+        <option value="antigo">Sim, mas desatualizado</option>
+        <option value="nao">Não existe</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="btn-wrap">
+    <button class="btn btn-ouro" onclick="avancarBloco(0)">Próximo bloco →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     BLOCO 1 — DECISÃO
+════════════════════════════════ -->
+<div class="tela" id="tela-b1">
+  <div class="bloco-header">
+    <div class="bloco-num">Bloco 1 · Dimensão 1 de 5</div>
+    <div class="bloco-titulo">Governança e decisão</div>
+    <div class="bloco-desc">Quem decide quando você não pode decidir?</div>
+  </div>
+  <div id="pergs-b1"></div>
+  <div class="btn-wrap">
+    <button class="btn btn-ghost" onclick="voltarBloco(1)">← Anterior</button>
+    <button class="btn btn-ouro" onclick="avancarBloco(1)">Próximo bloco →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     BLOCO 2 — CONHECIMENTO
+════════════════════════════════ -->
+<div class="tela" id="tela-b2">
+  <div class="bloco-header">
+    <div class="bloco-num">Bloco 2 · Dimensão 2 de 5</div>
+    <div class="bloco-titulo">Transmissão de conhecimento</div>
+    <div class="bloco-desc">Quem sabe o que você sabe sobre o seu patrimônio?</div>
+  </div>
+  <div id="pergs-b2"></div>
+  <div class="btn-wrap">
+    <button class="btn btn-ghost" onclick="voltarBloco(2)">← Anterior</button>
+    <button class="btn btn-ouro" onclick="avancarBloco(2)">Próximo bloco →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     BLOCO 3 — RESILIÊNCIA
+════════════════════════════════ -->
+<div class="tela" id="tela-b3">
+  <div class="bloco-header">
+    <div class="bloco-num">Bloco 3 · Dimensão 3 de 5</div>
+    <div class="bloco-titulo">Resiliência e adaptação</div>
+    <div class="bloco-desc">O que resiste quando a renda para ou o sistema é testado?</div>
+  </div>
+  <div id="pergs-b3"></div>
+  <div class="btn-wrap">
+    <button class="btn btn-ghost" onclick="voltarBloco(3)">← Anterior</button>
+    <button class="btn btn-ouro" onclick="avancarBloco(3)">Próximo bloco →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     BLOCO 4 — LIQUIDEZ
+════════════════════════════════ -->
+<div class="tela" id="tela-b4">
+  <div class="bloco-header">
+    <div class="bloco-num">Bloco 4 · Dimensão 4 de 5</div>
+    <div class="bloco-titulo">Liquidez estrutural</div>
+    <div class="bloco-desc">O que converte em caixa sem destruir valor quando o tempo aperta?</div>
+  </div>
+  <div id="pergs-b4"></div>
+  <div class="btn-wrap">
+    <button class="btn btn-ghost" onclick="voltarBloco(4)">← Anterior</button>
+    <button class="btn btn-ouro" onclick="avancarBloco(4)">Próximo bloco →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     BLOCO 5 — INDEPENDÊNCIA
+════════════════════════════════ -->
+<div class="tela" id="tela-b5">
+  <div class="bloco-header">
+    <div class="bloco-num">Bloco 5 · Dimensão 5 de 5</div>
+    <div class="bloco-titulo">Independência sistêmica</div>
+    <div class="bloco-desc">O que funciona sem você? O que depende exclusivamente da sua presença?</div>
+  </div>
+  <div id="pergs-b5"></div>
+  <div class="btn-wrap">
+    <button class="btn btn-ghost" onclick="voltarBloco(5)">← Anterior</button>
+    <button class="btn btn-ouro" onclick="gerarRelatorio()">Gerar meu diagnóstico →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     RELATÓRIO
+════════════════════════════════ -->
+<div class="tela" id="tela-relatorio">
+
+  <!-- CAPA -->
+  <div class="rel-capa">
+    <div class="rel-capa-badge">Diagnóstico VIDA de Robustez Patrimonial™</div>
+    <h2>Relatório de <em>Continuidade</em><br>Patrimonial</h2>
+    <div class="rel-capa-nome" id="relNome">—</div>
+    <div class="rel-data" id="relData">—</div>
+  </div>
+
+  <!-- SEÇÃO 1: ÍNDICE -->
+  <div class="rel-secao">
+    <div class="rel-secao-header">
+      <div class="rel-secao-num">1</div>
+      <div>
+        <div class="rel-secao-titulo">Índice VIDA de Robustez Patrimonial™</div>
+        <div class="rel-secao-subtitulo">IVRP™ · Pontuação geral do sistema</div>
+      </div>
+    </div>
+    <div class="ivcp-hero">
+      <div class="ivcp-anel">
+        <svg viewBox="0 0 160 160">
+          <defs>
+            <linearGradient id="gIVRP" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#b8922a"/>
+              <stop offset="50%" stop-color="#f8e38c"/>
+              <stop offset="100%" stop-color="#d7ae4d"/>
+            </linearGradient>
+          </defs>
+          <circle class="ivcp-track" cx="80" cy="80" r="70"/>
+          <circle class="ivcp-fill" cx="80" cy="80" r="70" id="ivcpFill"/>
+        </svg>
+        <div class="ivcp-centro">
+          <div class="ivcp-num" id="ivcpNum">—</div>
+          <div class="ivcp-label">de 100</div>
+        </div>
+      </div>
+      <div class="ivcp-classificacao">
+        <div class="ivcp-badge" id="ivcpBadge">—</div>
+        <div class="ivcp-resposta" id="ivcpResposta">—</div>
+        <div class="ivcp-frase" id="ivcpFrase">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 1B: VULNERABILIDADE PRINCIPAL -->
+  <div class="rel-secao" id="sec-vuln-principal"></div>
+
+  <!-- SEÇÃO 1B: VULNERABILIDADE PRINCIPAL -->
+  <div class="rel-secao" id="sec-vuln-principal"></div>
+
+  <!-- SEÇÃO 2: MAPA -->
+  <div class="rel-secao">
+    <div class="rel-secao-header">
+      <div class="rel-secao-num">2</div>
+      <div>
+        <div class="rel-secao-titulo">Mapa VIDA de Robustez Patrimonial™</div>
+        <div class="rel-secao-subtitulo">Análise por dimensão com interpretação</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-bottom:1.5rem;">
+      <svg id="radarRel" viewBox="0 0 300 260" width="100%"
+           style="max-width:300px;display:inline-block;overflow:visible;"></svg>
+    </div>
+    <div class="mapa-grid" id="mapaGrid"></div>
+  </div>
+
+  <!-- SEÇÃO 3: VULNERABILIDADES -->
+  <div class="rel-secao">
+    <div class="rel-secao-header">
+      <div class="rel-secao-num">3</div>
+      <div>
+        <div class="rel-secao-titulo">Vulnerabilidades Estruturais Priorizadas™</div>
+        <div class="rel-secao-subtitulo">Riscos identificados por impacto e prioridade</div>
+      </div>
+    </div>
+    <div class="vuln-lista" id="vulnLista"></div>
+  </div>
+
+  <!-- SEÇÃO 4: ARQUITETURA -->
+  <div class="rel-secao">
+    <div class="rel-secao-header">
+      <div class="rel-secao-num">4</div>
+      <div>
+        <div class="rel-secao-titulo">Arquitetura Atual vs. Arquitetura Recomendada™</div>
+        <div class="rel-secao-subtitulo">Diagnóstico estrutural do sistema patrimonial</div>
+      </div>
+    </div>
+    <div class="arq-grid" id="arqGrid"></div>
+  </div>
+
+  <!-- SEÇÃO 5: PLANO -->
+  <div class="rel-secao">
+    <div class="rel-secao-header">
+      <div class="rel-secao-num">5</div>
+      <div>
+        <div class="rel-secao-titulo">Plano de Robustez Patrimonial™</div>
+        <div class="rel-secao-subtitulo">Ações priorizadas em três fases</div>
+      </div>
+    </div>
+    <div class="fases" id="fasesPlano"></div>
+  </div>
+
+  <!-- CUSTO DA INAÇÃO -->
+  <div class="rel-secao" id="sec-custo-inacao"></div>
+
+  <!-- CUSTO DA INAÇÃO -->
+  <div class="rel-secao" id="sec-custo-inacao"></div>
+
+  <!-- SESSÃO -->
+  <div class="sessao-card">
+    <p class="sessao-titulo" id="sessaoTitulo">Próximo passo: sua sessão estratégica</p>
+    <p class="sessao-sub" id="sessaoSub">O diagnóstico revelou o mapa. A sessão estratégica transforma esse mapa em um plano de ação personalizado para o seu sistema patrimonial.</p>
+    <a href="https://calendly.com/ivanviannafinancas" target="_blank" class="btn-sessao">
+      Agendar minha sessão estratégica →
+    </a>
+    <button class="btn-wpp" onclick="abrirWpp()">
+      Falar com Ivan Vianna · CFP®
+    </button>
+  </div>
+
+  <div class="rodape">
+    <p>
+      <strong>Ivan Vianna · CFP®</strong> · Planejador financeiro · Arquiteto de patrimônio<br>
+      CNPJ 56.099.913/0001-61 · ivanviannafinancas.com.br<br><br>
+      Este relatório é de caráter diagnóstico e não constitui recomendação de investimento.<br>
+      As análises refletem as respostas declaradas e não substituem avaliação técnica individualizada.
+    </p>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+// ═══════════════════════════════════════════
+// PERGUNTAS POR BLOCO (5 perguntas × 5 blocos)
+// Escala: 0 / 5 / 12 / 20 pontos
+// ═══════════════════════════════════════════
+const BLOCOS = [
+  // B1 — DECISÃO
+  [
+    {
+      id:'b1q1', texto:'Existe um documento formal — testamento, procuração ou mandato — que define quem toma decisões críticas sobre seu patrimônio caso você fique incapacitado?',
+      opcoes:[
+        {txt:'Sim — documentado, atualizado e as pessoas indicadas estão preparadas.',pts:20},
+        {txt:'Existe, mas desatualizado ou as pessoas não sabem exatamente o que fazer.',pts:12},
+        {txt:'Não existe documento formal — está apenas combinado verbalmente.',pts:5},
+        {txt:'Nunca pensamos nisso de forma estruturada.',pts:0},
+      ]
+    },
+    {
+      id:'b1q2', texto:'Caso você morresse hoje, quão rápido alguém conseguiria acessar e gerir seus ativos sem paralisação?',
+      opcoes:[
+        {txt:'Em poucos dias — há estrutura jurídica e pessoas preparadas para isso.',pts:20},
+        {txt:'Em semanas — com dificuldade, mas seria possível.',pts:12},
+        {txt:'Em meses — dependeria de inventário e processos judiciais.',pts:5},
+        {txt:'Ficaria bloqueado indefinidamente sem minha presença.',pts:0},
+      ]
+    },
+    {
+      id:'b1q3', texto:'As decisões de investimento e gestão patrimonial dependem exclusivamente de você?',
+      opcoes:[
+        {txt:'Não — há co-gestão ou estruturas independentes que funcionam sem mim.',pts:20},
+        {txt:'Parcialmente — há gestores, mas a visão estratégica é exclusivamente minha.',pts:12},
+        {txt:'Quase inteiramente — os outros executam, mas eu decido tudo de relevância.',pts:5},
+        {txt:'Totalmente — sem minha presença, nada é decidido.',pts:0},
+      ]
+    },
+    {
+      id:'b1q4', texto:'Existe uma governança familiar definida — regras, processos e instâncias — para decisões que envolvem o patrimônio coletivo?',
+      opcoes:[
+        {txt:'Sim — há um conselho, acordo ou protocolo familiar formalmente estabelecido.',pts:20},
+        {txt:'Parcialmente — há conversas e acordos informais, mas nada formalizado.',pts:12},
+        {txt:'Raramente discutimos gestão patrimonial como família.',pts:5},
+        {txt:'Não existe nenhum mecanismo de governança familiar.',pts:0},
+      ]
+    },
+    {
+      id:'b1q5', texto:'Você tem um planejador financeiro, advogado ou gestor que conhece sua visão patrimonial completa e poderia orientar sua família em caso de emergência?',
+      opcoes:[
+        {txt:'Sim — há pelo menos um profissional com visão sistêmica do meu patrimônio.',pts:20},
+        {txt:'Há profissionais, mas cada um conhece apenas parte — ninguém tem a visão total.',pts:12},
+        {txt:'Tenho alguns contatos, mas sem relação estruturada ou documentada.',pts:5},
+        {txt:'Não há nenhum profissional com esse nível de conhecimento do meu patrimônio.',pts:0},
+      ]
+    },
+  ],
+  // B2 — CONHECIMENTO
+  [
+    {
+      id:'b2q1', texto:'Existe um inventário atualizado de todos os seus ativos — com localização, valor aproximado e documentação de acesso?',
+      opcoes:[
+        {txt:'Sim — completo, atualizado e acessível a pessoas-chave.',pts:20},
+        {txt:'Existe, mas incompleto ou desatualizado.',pts:12},
+        {txt:'Parcial — alguns ativos estão documentados, outros não.',pts:5},
+        {txt:'Não existe inventário formal dos meus ativos.',pts:0},
+      ]
+    },
+    {
+      id:'b2q2', texto:'Sua família mais próxima conhece a lógica e a estrutura do seu patrimônio — por que cada ativo existe e qual é sua função no sistema?',
+      opcoes:[
+        {txt:'Sim — há conversas regulares e documentação que explica a lógica.',pts:20},
+        {txt:'Conhecem superficialmente — sabem o que existe, mas não a estratégia por trás.',pts:12},
+        {txt:'Sabem muito pouco — nunca aprofundamos essas conversas.',pts:5},
+        {txt:'Não fazem ideia — nunca discutimos patrimônio em família.',pts:0},
+      ]
+    },
+    {
+      id:'b2q3', texto:'Suas senhas, acessos bancários, credenciais de investimento e documentos críticos estão seguros e acessíveis a uma pessoa de confiança?',
+      opcoes:[
+        {txt:'Sim — há um protocolo seguro e pelo menos uma pessoa de confiança tem acesso.',pts:20},
+        {txt:'Parcialmente — alguns acessos estão documentados, outros não.',pts:12},
+        {txt:'A maioria está apenas na minha memória ou em lugares que só eu sei.',pts:5},
+        {txt:'Nada está documentado ou acessível a ninguém além de mim.',pts:0},
+      ]
+    },
+    {
+      id:'b2q4', texto:'Você tem um herdeiro ou pessoa designada que está sendo preparada para gerir ou supervisionar o patrimônio no futuro?',
+      opcoes:[
+        {txt:'Sim — há uma pessoa identificada e em processo ativo de preparação.',pts:20},
+        {txt:'Há uma pessoa em mente, mas sem preparação formal ainda.',pts:12},
+        {txt:'É uma intenção, mas não tomamos nenhuma ação concreta.',pts:5},
+        {txt:'Não há ninguém identificado ou em preparação.',pts:0},
+      ]
+    },
+    {
+      id:'b2q5', texto:'Os contratos, acordos societários, testamento e documentos jurídicos críticos estão organizados, atualizados e de fácil localização?',
+      opcoes:[
+        {txt:'Sim — organizados, atualizados e há cópia acessível a pessoas designadas.',pts:20},
+        {txt:'Existem, mas dispersos entre escritórios e cartórios sem organização central.',pts:12},
+        {txt:'Alguns existem, mas estão desatualizados ou de difícil localização.',pts:5},
+        {txt:'Grande parte não existe formalmente ou está completamente desorganizada.',pts:0},
+      ]
+    },
+  ],
+  // B3 — RESILIÊNCIA
+  [
+    {
+      id:'b3q1', texto:'Qual é o nível de proteção do seu patrimônio contra riscos de responsabilidade civil — processos judiciais, execuções, cobranças?',
+      opcoes:[
+        {txt:'Alto — há holdings, estruturas jurídicas e seguros que protegem os ativos principais.',pts:20},
+        {txt:'Médio — há alguma estrutura, mas com lacunas relevantes.',pts:12},
+        {txt:'Baixo — o patrimônio está exposto sem proteção estruturada.',pts:5},
+        {txt:'Inexistente — nunca organizamos proteção patrimonial.',pts:0},
+      ]
+    },
+    {
+      id:'b3q2', texto:'Você possui seguros de vida, invalidez e proteção de renda adequados ao tamanho e às necessidades do seu patrimônio e família?',
+      opcoes:[
+        {txt:'Sim — revisados recentemente e dimensionados para minha realidade.',pts:20},
+        {txt:'Tenho seguros, mas não sei se o valor é adequado à minha situação atual.',pts:12},
+        {txt:'Seguros básicos, provavelmente insuficientes para o meu nível patrimonial.',pts:5},
+        {txt:'Não tenho seguros relevantes ou são muito antigos.',pts:0},
+      ]
+    },
+    {
+      id:'b3q3', texto:'Se a economia entrar em recessão severa por dois anos, como seu sistema patrimonial reagiria?',
+      opcoes:[
+        {txt:'Resistiria bem — há diversificação, reservas e fontes de renda não correlacionadas.',pts:20},
+        {txt:'Sobreviveria com perdas — mas sem colapso da estrutura principal.',pts:12},
+        {txt:'Sentiria forte impacto — dependemos excessivamente de um setor ou fonte de renda.',pts:5},
+        {txt:'Seria devastador — o sistema não tem capacidade de absorver uma crise prolongada.',pts:0},
+      ]
+    },
+    {
+      id:'b3q4', texto:'Seu patrimônio tem diversificação real — ativos de diferentes naturezas, geografias e descorrelacionados entre si?',
+      opcoes:[
+        {txt:'Sim — diversificação deliberada entre classes de ativos, geografias e moedas.',pts:20},
+        {txt:'Parcialmente — há diversificação dentro do Brasil, mas concentração em classes.',pts:12},
+        {txt:'Baixa — concentrado em imóveis ou na empresa, com pouca diversificação.',pts:5},
+        {txt:'Muito concentrado — um único ativo ou setor representa a maioria do patrimônio.',pts:0},
+      ]
+    },
+    {
+      id:'b3q5', texto:'Você tem fontes de renda que funcionam independentemente da sua capacidade de trabalho — renda passiva real?',
+      opcoes:[
+        {txt:'Sim — a renda passiva cobre mais de 60% das necessidades da família.',pts:20},
+        {txt:'Parcialmente — há renda passiva, mas ainda insuficiente para sustentar o padrão.',pts:12},
+        {txt:'Pouca — a maior parte da renda depende da minha atividade ativa.',pts:5},
+        {txt:'Nenhuma — dependo inteiramente da minha capacidade de gerar renda.',pts:0},
+      ]
+    },
+  ],
+  // B4 — LIQUIDEZ
+  [
+    {
+      id:'b4q1', texto:'Qual é o volume de reservas líquidas que você mantém disponíveis sem necessidade de liquidar ativos produtivos?',
+      opcoes:[
+        {txt:'Mais de 24 meses de despesas familiares e empresariais em ativos líquidos.',pts:20},
+        {txt:'Entre 12 e 24 meses de reservas líquidas disponíveis.',pts:12},
+        {txt:'Entre 3 e 12 meses — suficiente para curto prazo, insuficiente para crises.',pts:5},
+        {txt:'Menos de 3 meses — vivemos com pouca margem de segurança líquida.',pts:0},
+      ]
+    },
+    {
+      id:'b4q2', texto:'Se precisasse de R$ 500 mil em 30 dias sem vender imóvel ou participação societária, conseguiria?',
+      opcoes:[
+        {txt:'Sim — sem dificuldade e sem comprometer a estrutura patrimonial.',pts:20},
+        {txt:'Provavelmente — com algum esforço, mas seria possível.',pts:12},
+        {txt:'Com dificuldade — precisaria liquidar algum ativo ou tomar empréstimo.',pts:5},
+        {txt:'Não conseguiria sem comprometer ativos importantes.',pts:0},
+      ]
+    },
+    {
+      id:'b4q3', texto:'Você tem acesso a linhas de crédito pré-aprovadas ou estruturas que permitem liquidez sem venda de ativos em situações de emergência?',
+      opcoes:[
+        {txt:'Sim — linhas de crédito, home equity ou estruturas equivalentes disponíveis.',pts:20},
+        {txt:'Parcialmente — há acesso a crédito, mas não pré-estruturado.',pts:12},
+        {txt:'Pouco — dependeria de aprovar crédito no momento da necessidade.',pts:5},
+        {txt:'Não — em emergência, a única saída seria vender ativos.',pts:0},
+      ]
+    },
+    {
+      id:'b4q4', texto:'Qual percentual do seu patrimônio total poderia ser convertido em caixa em até 90 dias sem destruição de valor significativa?',
+      opcoes:[
+        {txt:'Mais de 40% — há ativos líquidos e semilíquidos suficientes.',pts:20},
+        {txt:'Entre 20% e 40% — liquidez razoável para crises moderadas.',pts:12},
+        {txt:'Entre 5% e 20% — patrimônio majoritariamente imobilizado.',pts:5},
+        {txt:'Menos de 5% — quase tudo em ativos de difícil liquidação.',pts:0},
+      ]
+    },
+    {
+      id:'b4q5', texto:'Você gerencia ativamente a liquidez do seu patrimônio como uma dimensão estratégica — com reservas planejadas e revisadas periodicamente?',
+      opcoes:[
+        {txt:'Sim — revisamos liquidez regularmente com estratégia definida.',pts:20},
+        {txt:'Parcialmente — há algum controle, mas sem estratégia formalizada.',pts:12},
+        {txt:'Pouco — a liquidez é gerida de forma reativa, não planejada.',pts:5},
+        {txt:'Não — nunca gerimos liquidez de forma deliberada.',pts:0},
+      ]
+    },
+  ],
+  // B5 — INDEPENDÊNCIA
+  [
+    {
+      id:'b5q1', texto:'Sua empresa ou negócio principal conseguiria operar por 12 meses sem sua presença ativa diária?',
+      opcoes:[
+        {txt:'Sim — há gestão profissional, processos e estrutura independentes de mim.',pts:20},
+        {txt:'Parcialmente — funcionaria, mas com perdas de eficiência relevantes.',pts:12},
+        {txt:'Por pouco tempo — minha ausência causaria problemas sérios rapidamente.',pts:5},
+        {txt:'Não tenho empresa, ou minha presença é absolutamente indispensável.',pts:0},
+      ]
+    },
+    {
+      id:'b5q2', texto:'Os relacionamentos bancários, institucionais e comerciais críticos do seu patrimônio dependem da sua presença pessoal?',
+      opcoes:[
+        {txt:'Não — estão estruturados de forma institucional, não dependem de mim pessoalmente.',pts:20},
+        {txt:'Parcialmente — alguns dependem de mim, outros não.',pts:12},
+        {txt:'Majoritariamente — a maioria dos relacionamentos-chave é pessoal.',pts:5},
+        {txt:'Totalmente — sem minha presença, os relacionamentos se dissolveriam.',pts:0},
+      ]
+    },
+    {
+      id:'b5q3', texto:'Há processos documentados para as decisões e operações mais críticas do seu patrimônio — que outro gestor poderia seguir sem você?',
+      opcoes:[
+        {txt:'Sim — processos documentados, testados e seguíveis por outro gestor.',pts:20},
+        {txt:'Parcialmente — alguns processos documentados, outros apenas na memória.',pts:12},
+        {txt:'Raramente — a maioria funciona pelo meu conhecimento tácito.',pts:5},
+        {txt:'Não — nada está documentado de forma que outra pessoa possa seguir.',pts:0},
+      ]
+    },
+    {
+      id:'b5q4', texto:'Existe uma estrutura jurídica — holding, trust, fundação — que preserva e organiza o patrimônio independentemente de qualquer pessoa física?',
+      opcoes:[
+        {txt:'Sim — holding ou estrutura equivalente ativa, com governança definida.',pts:20},
+        {txt:'Em implantação — o processo foi iniciado, mas não concluído.',pts:12},
+        {txt:'Em planejamento — é uma intenção, mas sem ação concreta ainda.',pts:5},
+        {txt:'Não — todo o patrimônio está em meu nome, sem estrutura jurídica.',pts:0},
+      ]
+    },
+    {
+      id:'b5q5', texto:'Se você avaliasse honestamente: seu patrimônio é um sistema que funciona por si — ou uma extensão da sua presença pessoal?',
+      opcoes:[
+        {txt:'É um sistema — funcionaria de forma autônoma com a estrutura atual.',pts:20},
+        {txt:'É parcialmente um sistema — alguns elementos funcionam sem mim, outros não.',pts:12},
+        {txt:'É mais uma extensão minha do que um sistema — depende demais de mim.',pts:5},
+        {txt:'É inteiramente uma extensão — sem mim, o sistema não se sustenta.',pts:0},
+      ]
+    },
+  ],
+];
+
+// ═══════════════════════════════════════════
+// ESTADO
+// ═══════════════════════════════════════════
+let contexto = {};
+let scores = [0,0,0,0,0]; // por dimensão, 0-100 cada
+let nomeCliente = '', emailCliente = '', wppCliente = '';
+
+// ═══════════════════════════════════════════
+// GERAR PERGUNTAS
+// ═══════════════════════════════════════════
+function gerarBlocos(){
+  BLOCOS.forEach((pergs,bi)=>{
+    const container=document.getElementById(`pergs-b${bi+1}`);
+    if(!container)return;
+    container.innerHTML='';
+    pergs.forEach((p,pi)=>{
+      const div=document.createElement('div');
+      div.style.marginBottom='1.8rem';
+      div.innerHTML=`
+        <div class="campo">
+          <label class="campo-label">${pi+1}. ${p.texto}</label>
+          <div class="escala-wrap" id="${p.id}">
+            ${p.opcoes.map((o,oi)=>`
+              <div class="escala-opcao" onclick="selecionarOpcao('${p.id}',${oi},${o.pts})">
+                <div class="op-dot"><div class="op-dot-inner"></div></div>
+                <div class="op-txt-wrap">
+                  <div class="op-pts-label">${['Sempre','Frequentemente','Raramente','Nunca'][oi] || 'Opção '+(oi+1)}</div>
+                  <div class="op-txt">${o.txt}</div>
+                </div>
+              </div>`).join('')}
+          </div>
+        </div>`;
+      container.appendChild(div);
+    });
+  });
+}
+
+function selecionarOpcao(id,oi,pts){
+  const wrap=document.getElementById(id);
+  if(!wrap)return;
+  wrap.querySelectorAll('.escala-opcao').forEach(el=>el.classList.remove('sel'));
+  wrap.querySelectorAll('.escala-opcao')[oi].classList.add('sel');
+  wrap.dataset.pts=pts;
+}
+
+function toggleMulti(el){
+  el.classList.toggle('sel');
+}
+
+// ═══════════════════════════════════════════
+// NAVEGAÇÃO
+// ═══════════════════════════════════════════
+function avancarBloco(blocoAtual){
+  if(blocoAtual===0){
+    nomeCliente=(document.getElementById('c0_nome').value||'').trim();
+    if(!nomeCliente){
+      document.getElementById('c0_nome').focus();
+      document.getElementById('c0_nome').style.borderColor='rgba(200,60,60,0.6)';
+      return;
+    }
+    // Validar email
+    const emailEl=document.getElementById('c0_email');
+    if(emailEl){
+      emailCliente=(emailEl.value||'').trim();
+      const emailOk=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailCliente);
+      if(!emailOk){
+        emailEl.style.borderColor='rgba(200,60,60,0.6)';
+        emailEl.placeholder='Digite um e-mail válido';
+        emailEl.focus();
+        return;
+      }
+    }
+    // Validar WhatsApp
+    const wppEl=document.getElementById('c0_wpp');
+    if(wppEl){
+      const wppRaw=(wppEl.value||'').replace(/\D/g,'');
+      if(wppRaw.length<10){
+        wppEl.style.borderColor='rgba(200,60,60,0.6)';
+        wppEl.placeholder='Mínimo 10 dígitos com DDD';
+        wppEl.focus();
+        return;
+      }
+      wppCliente=wppRaw;
+    }
+    contexto={
+      nome:nomeCliente,
+      email:emailCliente,
+      wpp:wppCliente,
+      faixa:document.getElementById('c0_faixa').value,
+      idade:document.getElementById('c0_idade').value,
+      familia:document.getElementById('c0_familia').value,
+      renda:document.getElementById('c0_renda').value,
+      empresa:document.getElementById('c0_empresa').value,
+      dependentes:document.getElementById('c0_dependentes').value,
+      exterior:document.getElementById('c0_exterior').value,
+      holding:document.getElementById('c0_holding').value,
+      testamento:document.getElementById('c0_testamento').value,
+    };
+  } else {
+    // calcular score do bloco
+    const pergs=BLOCOS[blocoAtual-1];
+    let total=0;
+    let respondidas=0;
+    pergs.forEach(p=>{
+      const wrap=document.getElementById(p.id);
+      if(wrap&&wrap.dataset.pts!==undefined){
+        total+=parseInt(wrap.dataset.pts);
+        respondidas++;
+      }
+    });
+    // score 0-100 para a dimensão
+    scores[blocoAtual-1]=respondidas>0?Math.round((total/(pergs.length*20))*100):0;
+  }
+
+  atualizarProg(blocoAtual);
+  mostrarTela(`tela-b${blocoAtual+1}`);
+}
+
+function voltarBloco(blocoAtual){
+  mostrarTela(`tela-b${blocoAtual-1}`);
+  atualizarProg(blocoAtual-2);
+}
+
+function atualizarProg(feito){
+  for(let i=0;i<6;i++){
+    const pb=document.getElementById(`pb${i}`);
+    if(!pb)continue;
+    pb.classList.remove('ativo','feito');
+    if(i<feito)pb.classList.add('feito');
+    else if(i===feito)pb.classList.add('ativo');
+  }
+}
+
+function mostrarTela(id){
+  document.querySelectorAll('.tela').forEach(t=>t.classList.remove('ativa'));
+  const el=document.getElementById(id);
+  if(el){el.classList.add('ativa');window.scrollTo({top:0,behavior:'smooth'});}
+}
+
+// ═══════════════════════════════════════════
+// GERAR RELATÓRIO
+// ═══════════════════════════════════════════
+const NIVEIS=[
+  {min:0, max:35, label:'Robustez crítica', cls:'nc',
+   resposta:'Provavelmente não.',respCls:'resp-nc',
+   frase:'As vulnerabilidades identificadas colocam em risco real a sobrevivência do seu sistema patrimonial na sua ausência.'},
+  {min:36,max:60, label:'Robustez frágil',  cls:'nf',
+   resposta:'Com grandes dificuldades.',respCls:'resp-nf',
+   frase:'Existem bases, mas as lacunas estruturais criam exposição significativa que eventos inesperados tendem a amplificar.'},
+  {min:61,max:80, label:'Robustez parcial', cls:'np',
+   resposta:'Sim, mas com vulnerabilidades.',respCls:'resp-np',
+   frase:'Você construiu fundações relevantes. O que falta pode ser exatamente o que um evento crítico vai testar.'},
+  {min:81,max:100,label:'Robustez consolidada', cls:'nr',
+   resposta:'Sim, com alta probabilidade.',respCls:'resp-nr',
+   frase:'Seu sistema demonstra capacidade estrutural de sobreviver ao tempo. O desafio é preservar essa robustez conforme o patrimônio cresce.'},
+];
+
+const DIM_NOMES=['Decisão','Conhecimento','Resiliência','Liquidez','Independência'];
+
+const DIM_INTERP={
+  Decisão:{
+    nr:'Sua governança decisória está bem estruturada. Há processos, pessoas designadas e documentação que permitem ao sistema funcionar na sua ausência.',
+    np:'Há elementos de governança, mas lacunas na formalização criam zonas de ambiguidade que pressão ou urgência tendem a explorar.',
+    nf:'A concentração decisória em sua pessoa é o ponto único de falha mais comum em patrimônios dessa complexidade. Cada decisão sem protocolo é um risco acumulado.',
+    nc:'Decisões inteiramente centralizadas em você significa que o sistema para quando você para. Essa é a fragilidade estrutural mais urgente a corrigir.',
+  },
+  Conhecimento:{
+    nr:'O conhecimento patrimonial está bem documentado e transmitido. Outros conseguiriam navegar o sistema na sua ausência.',
+    np:'Há transmissão parcial de conhecimento. O risco está nos pontos que só você sabe — e que desaparecem com você.',
+    nf:'Conhecimento concentrado em uma pessoa é dependência com prazo de validade. Sua família provavelmente não saberia o que fazer.',
+    nc:'Praticamente nenhum conhecimento foi transmitido. Em sua ausência, o patrimônio ficaria opaco para os próprios herdeiros.',
+  },
+  Resiliência:{
+    nr:'Seu sistema tem capacidade real de absorver choques. Diversificação, proteção e renda passiva criam amortecedores eficazes.',
+    np:'Há resiliência em algumas dimensões, mas cenários específicos ainda poderiam causar danos permanentes.',
+    nf:'A exposição a choques externos é elevada. Os eventos que mais destroem patrimônios são exatamente os mais imprevisíveis.',
+    nc:'O sistema não tem capacidade de absorver choques severos. Uma crise prolongada colocaria em risco a continuidade de tudo que foi construído.',
+  },
+  Liquidez:{
+    nr:'Sua estrutura de liquidez é robusta. Você pode agir quando outros não conseguem — e resistir sem destruir valor.',
+    np:'Há liquidez para situações moderadas, mas uma emergência severa ainda exigiria liquidação de ativos produtivos.',
+    nf:'A iliquidez é um multiplicador silencioso de qualquer crise. Vendas forçadas destroem valor e reduzem capacidade de recuperação futura.',
+    nc:'Com menos de três meses de reservas, qualquer evento inesperado força decisões destrutivas. A liquidez é a primeira linha de defesa de qualquer sistema patrimonial.',
+  },
+  Independência:{
+    nr:'Seu patrimônio demonstra independência sistêmica real. Processos, estruturas e pessoas funcionam além da sua presença pessoal.',
+    np:'Há elementos independentes, mas o sistema ainda depende de você em pontos críticos que um evento de ausência vai expor.',
+    nf:'A dependência do gestor central é o padrão mais comum de dissolução patrimonial entre gerações. Eficiência no curto prazo cria fragilidade no longo prazo.',
+    nc:'Um patrimônio que depende de uma pessoa para existir não é um sistema — é uma extensão dessa pessoa. E extensões não sobrevivem à ausência do centro.',
+  },
+};
+
+function dimNivel(pct){return pct>=80?'nr':pct>=50?'np':pct>=20?'nf':'nc';}
+function dimFill(pct){return pct>=80?'fr':pct>=50?'fp':pct>=20?'ff':'fc';}
+
+function gerarRelatorio(){
+  // calcular bloco 5
+  const pergs5=BLOCOS[4];
+  let total5=0;
+  pergs5.forEach(p=>{
+    const wrap=document.getElementById(p.id);
+    if(wrap&&wrap.dataset.pts!==undefined)total5+=parseInt(wrap.dataset.pts);
+  });
+  scores[4]=Math.round((total5/(pergs5.length*20))*100);
+
+  const ivcp=Math.round(scores.reduce((a,b)=>a+b,0)/5);
+  const nivel=NIVEIS.find(n=>ivcp>=n.min&&ivcp<=n.max)||NIVEIS[0];
+
+  // CAPA
+  document.getElementById('relNome').textContent=`Elaborado para: ${nomeCliente}`;
+  document.getElementById('relData').textContent=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
+
+  // ANEL
+  const C=2*Math.PI*70;
+  setTimeout(()=>{
+    document.getElementById('ivcpFill').style.strokeDashoffset=C-(ivcp/100)*C;
+  },400);
+  document.getElementById('ivcpNum').textContent=ivcp;
+  const badge=document.getElementById('ivcpBadge');
+  badge.textContent=nivel.label;badge.className=`ivcp-badge ${nivel.cls}`;
+  const resp=document.getElementById('ivcpResposta');
+  resp.textContent=nivel.resposta;resp.className=`ivcp-resposta ${nivel.respCls}`;
+  document.getElementById('ivcpFrase').textContent=nivel.frase;
+
+  // VULNERABILIDADE PRINCIPAL (crítica 3)
+  gerarVulnerabilidadePrincipal(scores);
+
+  // RADAR
+  desenharRadarRel(scores.map(s=>s/100));
+
+  // MAPA GRID
+  const grid=document.getElementById('mapaGrid');
+  grid.innerHTML='';
+  scores.forEach((s,i)=>{
+    const nl=dimNivel(s);
+    const fl=dimFill(s);
+    const interp=DIM_INTERP[DIM_NOMES[i]][nl];
+    const div=document.createElement('div');
+    div.className='dim-card';
+    div.innerHTML=`
+      <div class="dim-card-topo">
+        <span class="dim-card-nome">${DIM_NOMES[i]}</span>
+        <span class="dim-card-pts">${s}/100</span>
+      </div>
+      <div class="dim-bar"><div class="dim-bar-fill ${fl}" style="width:0%" id="db${i}"></div></div>
+      <div class="dim-interp">${interp}</div>`;
+    grid.appendChild(div);
+  });
+  setTimeout(()=>{scores.forEach((_,i)=>{document.getElementById(`db${i}`).style.width=scores[i]+'%';});},500);
+
+  // VULNERABILIDADES
+  gerarVulnerabilidades(scores,nivel.cls);
+
+  // ARQUITETURA
+  gerarArquitetura(scores);
+
+  // PLANO
+  gerarPlano(scores);
+
+  // CUSTO DA INAÇÃO (crítica 5)
+  gerarCustoDaInacao(scores,nomeCliente);
+
+  // Webhook
+  enviarWebhook(ivcp,nivel.label,scores);
+
+  mostrarTela('tela-relatorio');
+}
+
+
+// ═══════════════════════════════════════════
+// CRÍTICA 3 — VULNERABILIDADE PRINCIPAL
+// ═══════════════════════════════════════════
+function gerarVulnerabilidadePrincipal(sc){
+  const sec = document.getElementById('sec-vuln-principal');
+  if(!sec) return;
+
+  // Encontrar dimensão com menor score
+  const idx = sc.indexOf(Math.min(...sc));
+  const dim = DIM_NOMES[idx];
+  const score = sc[idx];
+  const nl = dimNivel(score);
+
+  const impacto = score < 30 ? 'Muito Alto' : score < 50 ? 'Alto' : score < 70 ? 'Médio' : 'Moderado';
+  const impCls  = score < 30 ? 'vb-imp-alto' : score < 50 ? 'vb-imp-alto' : 'vb-imp-med';
+
+  const DESC_VULN = {
+    Decisão:    'O processo decisório está centralizado de forma crítica. Ausência, incapacidade ou morte do gestor principal coloca todo o sistema em colapso operacional.',
+    Conhecimento:'O mapa mental do patrimônio existe apenas na sua cabeça. Sua família e seus herdeiros não saberiam como navegar o sistema na sua ausência.',
+    Resiliência:'O sistema não tem capacidade adequada de absorver choques. Um evento severo — econômico, jurídico ou pessoal — pode comprometer a continuidade permanentemente.',
+    Liquidez:   'A estrutura está excessivamente imobilizada. Em situações de urgência, o único caminho seria a venda de ativos produtivos em condições desfavoráveis.',
+    Independência:'O patrimônio é uma extensão da sua presença — não um sistema autônomo. O risco de dissolução aumenta a cada ano sem mudança estrutural.',
+  };
+
+  sec.innerHTML = `
+    <div class="rel-secao-header">
+      <div class="rel-secao-num">★</div>
+      <div>
+        <div class="rel-secao-titulo">Maior Vulnerabilidade Estrutural Identificada</div>
+        <div class="rel-secao-subtitulo">Dimensão de maior risco no seu sistema patrimonial</div>
+      </div>
+    </div>
+    <div style="background:rgba(200,60,60,0.08);border:1px solid rgba(200,60,60,0.3);border-left:4px solid #ff6666;border-radius:4px;padding:1.4rem 1.5rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;flex-wrap:wrap;gap:0.5rem;">
+        <div style="font-size:1.1rem;font-weight:700;color:#FFFFFF;letter-spacing:0.04em;text-transform:uppercase;">${dim}</div>
+        <div style="display:flex;gap:0.5rem;">
+          <span class="v-badge ${impCls}">Impacto: ${impacto}</span>
+          <span class="v-badge vb-imp-alto" style="background:rgba(200,60,60,0.18);border-color:rgba(200,60,60,0.38);color:#ff9090;">Pontuação: ${score}/100</span>
+        </div>
+      </div>
+      <div style="font-size:0.95rem;color:#e8e0d0;line-height:1.65;">${DESC_VULN[dim]}</div>
+      <div style="margin-top:1rem;">
+        <div style="font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:0.4rem;">Nível de continuidade nesta dimensão</div>
+        <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;">
+          <div style="height:100%;width:${score}%;background:linear-gradient(90deg,#c83c3c,#ff6666);border-radius:3px;transition:width 1.2s ease;"></div>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════
+// CRÍTICA 4 — ARQUITETURA ADAPTATIVA (substituição)
+// ═══════════════════════════════════════════
+// gerarArquitetura substituída pela versão adaptativa acima
+
+// ═══════════════════════════════════════════
+// CRÍTICA 5 — CUSTO DA INAÇÃO
+// ═══════════════════════════════════════════
+function gerarCustoDaInacao(sc, nome){
+  const sec = document.getElementById('sec-custo-inacao');
+  if(!sec) return;
+
+  // Gerar consequências baseadas nos scores mais baixos
+  const consequencias = [];
+
+  if(sc[0]<60) consequencias.push('A dependência decisória permanecerá concentrada — cada mês sem protocolo aumenta o risco de paralisação em situações de emergência.');
+  if(sc[1]<60) consequencias.push('O conhecimento patrimonial continuará existindo apenas na sua memória. O risco sucessório cresce com o tempo e com a complexidade do sistema.');
+  if(sc[2]<60) consequencias.push('A exposição a choques externos permanecerá elevada. Crises econômicas, mudanças tributárias ou eventos pessoais encontrarão o sistema sem amortecedores.');
+  if(sc[3]<60) consequencias.push('A liquidez insuficiente continuará forçando decisões reativas. Em emergências, a única saída seguirá sendo a venda de ativos em condições desfavoráveis.');
+  if(sc[4]<60) consequencias.push('A dependência sistêmica do fundador seguirá acumulando. Cada ano sem mudança estrutural aumenta a probabilidade de dissolução patrimonial intergeracional.');
+
+  if(contexto.testamento==='nao') consequencias.push('A ausência de testamento significa que a sucessão seguirá as regras gerais do Código Civil — que podem não refletir sua vontade real.');
+  if(contexto.holding==='nao')    consequencias.push('Sem holding, o patrimônio permanece sem proteção estrutural e sem mecanismo de transmissão organizada.');
+
+  if(consequencias.length===0){
+    consequencias.push('Seu sistema está relativamente bem estruturado. O principal risco da inação é deixar de refinar os pontos de atenção identificados enquanto o patrimônio cresce em complexidade.');
+  }
+
+  const items = consequencias.slice(0,5).map(c=>`
+    <div style="display:flex;align-items:flex-start;gap:0.9rem;padding:0.75rem 0;border-bottom:1px solid rgba(248,227,140,0.07);">
+      <span style="flex-shrink:0;color:#ffcc66;font-size:1rem;margin-top:0.1rem;">→</span>
+      <span style="font-size:0.95rem;color:#e8e0d0;line-height:1.6;">${c}</span>
+    </div>`).join('');
+
+  sec.innerHTML = `
+    <div class="rel-secao-header">
+      <div class="rel-secao-num">6</div>
+      <div>
+        <div class="rel-secao-titulo">O custo da inação</div>
+        <div class="rel-secao-subtitulo">O que acontece se nada mudar nos próximos 12 meses</div>
+      </div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(248,227,140,0.12);border-radius:4px;padding:1.2rem 1.4rem;">
+      ${items}
+      <div style="padding-top:0.9rem;font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;color:rgba(248,227,140,0.65);line-height:1.6;">
+        "O tempo não é neutro para sistemas patrimoniais. Ele amplifica o que está estruturado — e o que não está."
+      </div>
+    </div>`;
+}
+
+function gerarVulnerabilidades(sc,nivCls){
+  const lista=document.getElementById('vulnLista');
+  lista.innerHTML='';
+  const vulns=[];
+
+  // Gera vulnerabilidades baseadas nos scores mais baixos
+  const scoredDims=sc.map((s,i)=>({dim:DIM_NOMES[i],score:s,idx:i}))
+    .sort((a,b)=>a.score-b.score);
+
+  const VULN_DEF={
+    Decisão:[
+      {titulo:'Ausência de protocolo decisório formal',
+       imp:'Alto',prob:'Alta',prior:'Imediata',cls:'alta',
+       desc:'Não há processo documentado para tomada de decisões críticas na sua ausência. Em situação de emergência, o patrimônio ficará paralisado ou sujeito a decisões não planejadas.'},
+      {titulo:'Vulnerabilidade na sucessão de gestão',
+       imp:'Alto',prob:'Média',prior:'90 dias',cls:'alta',
+       desc:'A gestão patrimonial está centralizada sem sucessor preparado. O risco aumenta com o tempo e com a complexidade crescente do patrimônio.'},
+    ],
+    Conhecimento:[
+      {titulo:'Conhecimento patrimonial excessivamente concentrado',
+       imp:'Muito Alto',prob:'Alta',prior:'Imediata',cls:'alta',
+       desc:'A lógica e a estrutura do patrimônio existem primariamente na sua memória. Sua família não saberia o que fazer — ou por quê cada decisão foi tomada.'},
+      {titulo:'Ausência de inventário e documentação acessível',
+       imp:'Alto',prob:'Alta',prior:'90 dias',cls:'alta',
+       desc:'Sem mapeamento documentado dos ativos, acessos e responsabilidades, qualquer evento de ausência cria caos operacional e jurídico.'},
+    ],
+    Resiliência:[
+      {titulo:'Dependência excessiva de uma fonte de renda',
+       imp:'Alto',prob:'Média',prior:'180 dias',cls:'media',
+       desc:'A concentração em uma única fonte de renda cria vulnerabilidade sistêmica. Um evento que afete essa fonte compromete toda a estrutura.'},
+      {titulo:'Proteção patrimonial insuficiente',
+       imp:'Muito Alto',prob:'Baixa',prior:'180 dias',cls:'media',
+       desc:'Sem estruturas de proteção adequadas, o patrimônio fica exposto a riscos de responsabilidade civil, execuções e disputas que poderiam ser evitados.'},
+    ],
+    Liquidez:[
+      {titulo:'Reservas líquidas insuficientes para emergências',
+       imp:'Alto',prob:'Alta',prior:'Imediata',cls:'alta',
+       desc:'Com reservas abaixo do necessário, qualquer evento inesperado força vendas de ativos em condições desfavoráveis, destruindo valor e reduzindo capacidade de recuperação.'},
+      {titulo:'Patrimônio majoritariamente imobilizado',
+       imp:'Médio',prob:'Média',prior:'360 dias',cls:'media',
+       desc:'A concentração em ativos ilíquidos limita a capacidade de resposta a oportunidades e emergências. Iliquidez é o multiplicador silencioso de qualquer crise.'},
+    ],
+    Independência:[
+      {titulo:'Dependência sistêmica do fundador',
+       imp:'Muito Alto',prob:'Alta',prior:'Imediata',cls:'alta',
+       desc:'O patrimônio é uma extensão da sua presença pessoal, não um sistema independente. Esse é o padrão mais comum de dissolução patrimonial entre gerações.'},
+      {titulo:'Ausência de estrutura jurídica de proteção e continuidade',
+       imp:'Alto',prob:'Média',prior:'180 dias',cls:'media',
+       desc:'Sem holding ou estrutura equivalente, o patrimônio não tem proteção estrutural nem mecanismo de continuidade independente de qualquer pessoa física.'},
+    ],
+  };
+
+  // Pega as 3-5 vulnerabilidades mais relevantes
+  let count=0;
+  scoredDims.forEach(d=>{
+    if(count>=5)return;
+    if(d.score<60){
+      const defs=VULN_DEF[d.dim]||[];
+      defs.slice(0,d.score<30?2:1).forEach(v=>{
+        if(count>=5)return;
+        vulns.push(v);count++;
+      });
+    }
+  });
+
+  // Se score geral alto, mostra só pontos de atenção
+  if(vulns.length===0){
+    vulns.push({
+      titulo:'Manutenção da robustez em cenários de crescimento',
+      imp:'Médio',prob:'Média',prior:'360 dias',cls:'baixa',
+      desc:'Patrimônios robustos têm pontos cegos que só aparecem quando o sistema cresce em complexidade. A revisão periódica das dimensões identificadas é o que preserva a continuidade.',
+    });
+  }
+
+  vulns.forEach((v,i)=>{
+    const priorCls=v.prior==='Imediata'?'vb-prior-imed':v.prior==='90 dias'?'vb-prior-90':v.prior==='180 dias'?'vb-prior-180':'vb-prior-360';
+    const impCls=v.imp.includes('Muito')?'vb-imp-alto':v.imp==='Alto'?'vb-imp-alto':v.imp==='Médio'?'vb-imp-med':'vb-imp-baixo';
+    const div=document.createElement('div');
+    div.className=`vuln-item ${v.cls}`;
+    div.innerHTML=`
+      <div class="vuln-topo">
+        <div class="vuln-titulo">Vulnerabilidade #${i+1} — ${v.titulo}</div>
+        <div class="vuln-badges">
+          <span class="v-badge ${impCls}">Impacto: ${v.imp}</span>
+          <span class="v-badge ${priorCls}">Prioridade: ${v.prior}</span>
+        </div>
+      </div>
+      <div class="vuln-desc">${v.desc}</div>`;
+    lista.appendChild(div);
+  });
+}
+
+function gerarArquitetura(sc){
+  const ivcp=Math.round(sc.reduce((a,b)=>a+b,0)/5);
+  const grid=document.getElementById('arqGrid');
+
+  // Arquitetura atual baseada nos scores
+  const nodosAtuais=[];
+  const nodosRec=[];
+
+  if(sc[0]<50){nodosAtuais.push('Fundador como único decisor');}
+  else{nodosAtuais.push('Decisão com alguma governança');}
+  nodosAtuais.push('Empresa / Ativos');
+  if(sc[4]<50){nodosAtuais.push('Patrimônio pessoal (sem estrutura)');nodosAtuais.push('Família (sem preparo)');}
+  else{nodosAtuais.push('Estrutura jurídica parcial');nodosAtuais.push('Família');}
+
+  nodosRec.push('Governança familiar estruturada');
+  nodosRec.push('Holding / Estrutura jurídica');
+  nodosRec.push('Patrimônio diversificado e protegido');
+  nodosRec.push('Família preparada e documentada');
+
+  const buildCol=(titulo,cls,nodes,obs)=>{
+    const nodesHtml=nodes.map((n,i)=>`
+      ${i>0?'<div class="arq-arrow">↓</div>':''}
+      <div class="arq-node">${n}</div>`).join('');
+    return `<div class="arq-col ${cls}">
+      <div class="arq-col-titulo">${titulo}</div>
+      <div class="arq-nodes">${nodesHtml}</div>
+      <div class="arq-obs">${obs}</div>
+    </div>`;
+  };
+
+  const obsAtual=ivcp<50
+    ?'Sistema com dependência central elevada. A continuidade está vinculada à presença do fundador.'
+    :'Sistema com estrutura em desenvolvimento. Existem elementos de independência, mas com lacunas relevantes.';
+  const obsRec='Sistema patrimonial com governança, proteção e continuidade estruturadas. Funciona independentemente de qualquer pessoa física.';
+
+  grid.innerHTML=buildCol('Arquitetura atual','atual',nodosAtuais,obsAtual)
+    +buildCol('Arquitetura recomendada','rec',nodosRec,obsRec);
+}
+
+function gerarPlano(sc){
+  const container=document.getElementById('fasesPlano');
+  const ivcp=Math.round(sc.reduce((a,b)=>a+b,0)/5);
+
+  const FASES=[
+    {
+      titulo:'Proteção imediata',prazo:'0 a 90 dias',
+      acoes:[
+        'Elaborar ou atualizar inventário completo de ativos com instruções de acesso',
+        'Revisar e atualizar testamento, procurações e mandatos',
+        'Documentar senhas, acessos e credenciais em cofre digital seguro',
+        'Identificar e briefar pelo menos uma pessoa de confiança sobre o sistema patrimonial',
+      ]
+    },
+    {
+      titulo:'Continuidade estrutural',prazo:'90 a 180 dias',
+      acoes:[
+        'Estruturar ou revisar holding patrimonial com advogado especializado',
+        'Formalizar protocolo de governança familiar por escrito',
+        'Contratar ou revisar seguros de vida e invalidez dimensionados à realidade atual',
+        'Iniciar processo de transmissão de conhecimento com herdeiros ou sucessores designados',
+      ]
+    },
+    {
+      titulo:'Robustez sistêmica',prazo:'180 a 360 dias',
+      acoes:[
+        'Diversificar fontes de renda — construir ou ampliar renda passiva real',
+        'Revisar e ampliar reservas líquidas para pelo menos 12 meses',
+        'Testar cenários críticos: o que acontece se a renda principal parar por 12 meses?',
+        'Revisar anualmente todas as dimensões do sistema patrimonial com profissional especializado',
+      ]
+    },
+  ];
+
+  // Prioriza fases baseadas nos scores mais críticos
+  const acoesPriorizadas=FASES.map(f=>({...f}));
+  if(sc[0]<40||sc[4]<40){
+    // Decisão ou Independência crítica — proteção imediata primeiro
+  }
+  if(sc[2]<40||sc[3]<40){
+    // Resiliência ou Liquidez crítica — adiciona ação específica
+    acoesPriorizadas[0].acoes.unshift('URGENTE: Constituir reserva de emergência mínima de 3 meses imediatamente');
+  }
+
+  container.innerHTML=acoesPriorizadas.map((f,i)=>`
+    <div class="fase">
+      <div class="fase-header">
+        <div class="fase-num">${i+1}</div>
+        <div class="fase-titulo">Fase ${i+1} — ${f.titulo}</div>
+        <div class="fase-prazo">${f.prazo}</div>
+      </div>
+      <div class="fase-acoes">
+        ${f.acoes.map(a=>`
+          <div class="fase-acao">
+            <div class="acao-check"></div>
+            <span>${a}</span>
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function desenharRadarRel(vals){
+  const svg=document.getElementById('radarRel');
+  const cx=150,cy=130,r=90,n=5;
+  const ang=i=>(Math.PI*2*i/n)-Math.PI/2;
+  svg.innerHTML=`<defs>
+    <linearGradient id="rgR" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b8922a" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#f8e38c" stop-opacity="0.45"/>
+    </linearGradient></defs>`;
+  [0.25,0.5,0.75,1].forEach(f=>{
+    const pts=Array.from({length:n},(_,i)=>{const a=ang(i);return `${cx+Math.cos(a)*r*f},${cy+Math.sin(a)*r*f}`;}).join(' ');
+    svg.insertAdjacentHTML('beforeend',`<polygon points="${pts}" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>`);
+  });
+  for(let i=0;i<n;i++){
+    const a=ang(i);
+    svg.insertAdjacentHTML('beforeend',`<line x1="${cx}" y1="${cy}" x2="${cx+Math.cos(a)*r}" y2="${cy+Math.sin(a)*r}" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>`);
+  }
+  const MIN=0.06;
+  const vMin=vals.map(v=>Math.max(v,MIN));
+  const pts=vMin.map((v,i)=>{const a=ang(i);return `${cx+Math.cos(a)*r*v},${cy+Math.sin(a)*r*v}`;}).join(' ');
+  svg.insertAdjacentHTML('beforeend',`<polygon points="${pts}" fill="url(#rgR)" stroke="#d7ae4d" stroke-width="2" opacity="1"/>`);
+  DIM_NOMES.forEach((_,i)=>{
+    const a=ang(i);
+    const lx=cx+Math.cos(a)*(r+22),ly=cy+Math.sin(a)*(r+18);
+    svg.insertAdjacentHTML('beforeend',
+      `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle"
+             font-family="Montserrat,sans-serif" font-size="9" font-weight="700"
+             letter-spacing="0.05em" fill="#FFFFFF">${DIM_NOMES[i].toUpperCase()}</text>`);
+  });
+}
+
+function abrirWpp(){
+  const msg=encodeURIComponent(`Olá, Ivan. Concluí o Diagnóstico VIDA de Robustez Patrimonial™ e gostaria de agendar minha sessão estratégica.`);
+  window.open(`https://wa.me/5511979530555?text=${msg}`,'_blank');
+}
+
+async function enviarWebhook(ivcp,nivel,sc){
+  try{
+    await fetch('https://script.google.com/macros/s/AKfycbzsVpO_OoWVjENJyDP2MCY-wGNqSnuz1oc6txaATRksQNRJCwrOaJaKlGzv2bQQI0I/exec',{
+      method:'POST',mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        sheet:'Diagnostico Robustez',
+        nome:nomeCliente,
+        email:emailCliente,
+        wpp:wppCliente,
+        ivcp,nivel,
+        decisao:sc[0],conhecimento:sc[1],resiliencia:sc[2],liquidez:sc[3],independencia:sc[4],
+        empresa:contexto.empresa,holding:contexto.holding,testamento:contexto.testamento,
+        exterior:contexto.exterior,dependentes:contexto.dependentes,
+        faixa:contexto.faixa,idade:contexto.idade,
+        data:new Date().toLocaleString('pt-BR'),
+      })
+    });
+  }catch(_){}
+}
+
+// INIT
+gerarBlocos();
+atualizarProg(-1);
+</script>
+</body>
+</html>
