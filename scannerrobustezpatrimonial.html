@@ -615,16 +615,42 @@ function selecionar(pi,oi,pts){
 }
 
 function avancarCap(skip){
-  console.log('avancarCap chamado, skip=', skip);
   if(!skip){
     var emailEl = document.getElementById('inputEmail');
     var wppEl   = document.getElementById('inputWpp');
-    if(emailEl) email = emailEl.value.trim();
-    if(wppEl)   wpp   = wppEl.value.replace(/\D/g,'');
-    console.log('email=', email, 'wpp=', wpp);
+    var emailVal = emailEl ? emailEl.value.trim() : '';
+    var wppRaw   = wppEl   ? wppEl.value.replace(/\D/g,'') : '';
+
+    // Validar email
+    var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal);
+    if(!emailOk){
+      if(emailEl){
+        emailEl.style.borderColor='rgba(220,60,60,0.8)';
+        emailEl.placeholder='Digite um e-mail válido';
+        emailEl.focus();
+      }
+      return;
+    }
+
+    // Validar WhatsApp — mínimo 10 dígitos (DDD + número)
+    if(wppRaw.length < 10){
+      if(wppEl){
+        wppEl.style.borderColor='rgba(220,60,60,0.8)';
+        wppEl.value='';
+        wppEl.placeholder='Informe DDD + número (mín. 10 dígitos)';
+        wppEl.focus();
+      }
+      return;
+    }
+
+    // Reset bordas
+    if(emailEl) emailEl.style.borderColor='';
+    if(wppEl)   wppEl.style.borderColor='';
+
+    email = emailVal;
+    wpp   = wppRaw;
   }
   capFeita = true;
-  console.log('chamando calcular()');
   calcular();
 }
 
